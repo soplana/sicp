@@ -177,3 +177,48 @@
 (print (abs 6))
 (print (abs (- 6)))
 (print (abs 0))
+
+;; 条件式の一般的な形式は以下のとおり
+;; (cond (<p1> <e1>)
+;;       (<p2> <e2>)
+;;       ...
+;;       (<pn> <en>))
+;;
+;; clauses(クローズ, 節)         = 括弧でくくられた式のペア(<p> <e>)
+;; predicate(述語)               = ペアの最初の式. 条件式
+;;                                 ※ 真か偽を返す手続きに用いられる名前. absの例ではプリミティブな述語(<,>,=)を用いた.
+;;                                   プリミティブじゃない述語とは...?
+;; consequent expression(結果式) = 条件式の結果の値.
+;;
+;; 条件式の評価の流れ:
+;;   1. 述語(predicate)<p1>が最初に評価される.
+;;   2. もし<p1>の値が偽であれば次に<p2>が評価される.
+;;   3. この過程が真になるまで続け, 真になればインタプリタが述語(predicate)に対応する結果式(consequent expression)を返す.
+;;   4. 見つからない場合はcondの値は未定義となる(未定義？nilか？)
+;;
+;; elseを用いてもabsを表現できる.
+(define (abs x)
+  (cond ((< x 0) (- x))
+        (else x)
+  ))
+(print (abs 6))
+(print (abs (- 6)))
+(print (abs 0))
+
+;; else = 特殊なシンボル. 最後の節(clauses)<p>の場処で利用可能.
+;;        elseと同じ場所で, 常に真を返す式を使用するのと同義.
+;;
+;; さらにifを使って別の表現をすることも可能.
+(define (abs x)
+  (if (< x 0)
+      (- x)
+      x
+  ))
+(print (abs 6))
+(print (abs (- 6)))
+(print (abs 0))
+
+;; if = 特殊形式である. ケース分析(case analysis)において, 正確に2つのケースが存在する場合に用いる.
+;;
+;; ifの形式は以下となる:
+;;  (if <predicate> <consequent> <alternative>)
